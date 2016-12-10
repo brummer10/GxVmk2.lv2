@@ -25,7 +25,7 @@
 #include <lv2.h>
 
 #define GXPLUGIN_URI "http://guitarix.sourceforge.net/plugins/gx_vmk2d_"
-#define GXPLUGIN_UI_URI "http://guitarix.sourceforge.net/plugins/gx_vmk2d_gui"
+#define GXPLUGIN_UI_URI "http://guitarix.sourceforge.net/plugins/gx_vmk2d_gui#_vmk2d_"
 
 
 typedef enum

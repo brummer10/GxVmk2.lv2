@@ -24,8 +24,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix guiext: <http://lv2plug.in/ns/extensions/ui#>.
-@prefix mod: <http://portalmod.com/ns/modgui#>.
-@prefix time: <http://lv2plug.in/ns/ext/time/#>.
+@prefix time: <http://lv2plug.in/ns/ext/time#>.
 @prefix units: <http://lv2plug.in/ns/extensions/units#> .
 
 <http://guitarix.sourceforge.net#me>
@@ -48,9 +47,10 @@
     lv2:project <http://guitarix.sourceforge.net/plugins/gx_vmk2d_> ;
     lv2:optionalFeature lv2:hardRTCapable ;
       
-    lv2:minorVersion 28;
-    lv2:microVersion 3;
+    lv2:minorVersion 34;
+    lv2:microVersion 0;
 
+  guiext:ui <http://guitarix.sourceforge.net/plugins/gx_vmk2d_gui#_vmk2d_>;
     
 rdfs:comment """
 
@@ -115,8 +115,8 @@ rdfs:comment """
         lv2:maximum 1.0 ;
         lv2:portProperty lv2:integer;
         lv2:portProperty lv2:enumeration ; 
-        lv2:scalePoint [rdfs:label "ON"; rdf:value 0];
-        lv2:scalePoint [rdfs:label "OFF"; rdf:value 1];
+        lv2:scalePoint [rdfs:label "OFF"; rdf:value 0];
+        lv2:scalePoint [rdfs:label "ON"; rdf:value 1];
 
     ]      , [
         a lv2:InputPort ,
@@ -133,13 +133,13 @@ rdfs:comment """
         lv2:index 7 ;
         lv2:symbol "REVERB" ;
         lv2:name "REVERB" ;
-        lv2:default 2.0 ;
+        lv2:default 0.0 ;
         lv2:minimum 0.0 ;
-        lv2:maximum 2.0 ;
+        lv2:maximum 1.0 ;
         lv2:portProperty lv2:integer;
         lv2:portProperty lv2:enumeration ; 
-        lv2:scalePoint [rdfs:label "ON"; rdf:value 0];
-        lv2:scalePoint [rdfs:label "OFF"; rdf:value 1];
+        lv2:scalePoint [rdfs:label "OFF"; rdf:value 0];
+        lv2:scalePoint [rdfs:label "ON"; rdf:value 1];
 
     ]      , [
         a lv2:InputPort ,
@@ -165,13 +165,13 @@ rdfs:comment """
         lv2:index 10 ;
         lv2:symbol "VIBE" ;
         lv2:name "VIBE" ;
-        lv2:default 1.0 ;
+        lv2:default 0.0 ;
         lv2:minimum 0.0 ;
         lv2:maximum 1.0 ;
         lv2:portProperty lv2:integer;
         lv2:portProperty lv2:enumeration ; 
-        lv2:scalePoint [rdfs:label "ON"; rdf:value 0];
-        lv2:scalePoint [rdfs:label "OFF"; rdf:value 1];
+        lv2:scalePoint [rdfs:label "OFF"; rdf:value 0];
+        lv2:scalePoint [rdfs:label "ON"; rdf:value 1];
 
     ]      , [
         a lv2:InputPort ,
@@ -183,3 +183,9 @@ rdfs:comment """
         lv2:minimum 0.0 ;
         lv2:maximum 1.0 ;
     ] .
+
+<http://guitarix.sourceforge.net/plugins/gx_vmk2d_gui#_vmk2d_>
+  a guiext:GtkUI;
+  guiext:binary <gx_vmk2d_ui.so>;
+  guiext:requiredFeature guiext:makeResident;
+  .
