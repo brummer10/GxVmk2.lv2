@@ -131,6 +131,8 @@ static void gx_paint_box_init (GxPaintBox *paint_box)
 	set_paint_func(paint_box, NULL);
 	paint_box->gxr_image = NULL;
     paint_box->stock_image = gdk_pixbuf_new_from_resource("/gxplug/pedal.png", NULL);
+	paint_box->gxf_image = NULL;
+    paint_box->stock2_image = gdk_pixbuf_new_from_resource("/gxplug/frame.png", NULL);
     //gdk_pixbuf_save(paint_box->stock_image,"plug.png","png",NULL);
 }
 
@@ -149,6 +151,14 @@ static void gx_paint_box_destroy(GtkObject *object)
 		g_object_unref(paint_box->stock_image);
 	}
 	paint_box->stock_image = NULL;
+	if (G_IS_OBJECT(paint_box->gxf_image)) {
+		g_object_unref(paint_box->gxf_image);
+	}
+	paint_box->gxf_image = NULL;
+    if (G_IS_OBJECT(paint_box->stock2_image)) {
+		g_object_unref(paint_box->stock2_image);
+	}
+	paint_box->stock2_image = NULL;
 	GTK_OBJECT_CLASS(gx_paint_box_parent_class)->destroy(object);
 }
 
@@ -247,10 +257,56 @@ static void pedal_expose(GtkWidget *wi, GdkEventExpose *ev)
     g_free (allocation); 
 }
 
+static void frame_expose(GtkWidget *wi, GdkEventExpose *ev)
+{
+    GtkAllocation *allocation = g_new0 (GtkAllocation, 1);
+    gtk_widget_get_allocation(GTK_WIDGET(wi), allocation); 
+	gint rect_width  = allocation->width;
+	gint rect_height = allocation->height;
+	if (rect_width <= 0 || rect_height <= 0) {
+	    return;
+	}
+	cairo_t *cr;
+	GxPaintBox *paintbox = GX_PAINT_BOX(wi);
+	/* create a cairo context */
+	cr = gdk_cairo_create(gtk_widget_get_window(wi));
+	GdkRegion *region;
+	region = gdk_region_rectangle (allocation);
+	gdk_region_intersect (region, ev->region);
+	gdk_cairo_region (cr, region);
+	cairo_clip (cr);
+	
+	gint x0      = allocation->x;
+	gint y0      = allocation->y;
+
+	static double ne_w = 0.;
+	if (ne_w != rect_width*rect_height*x0 || !(GDK_IS_PIXBUF (paintbox-> gxf_image))) {
+		ne_w = rect_width*rect_height*x0;
+		if (G_IS_OBJECT(paintbox-> gxf_image)) {
+			g_object_unref(paintbox->gxf_image);
+		}
+		
+		paintbox->gxf_image = gdk_pixbuf_scale_simple(
+			paintbox->stock2_image, wi->allocation.width ,wi->allocation.height, GDK_INTERP_NEAREST);
+			//g_object_unref(paintbox->stock_image);
+	}
+
+	// base 
+	gdk_cairo_set_source_pixbuf(cr,paintbox->gxf_image, x0, y0);
+	cairo_rectangle (cr, x0,y0,rect_width,rect_height);
+	cairo_fill (cr);
+
+	cairo_destroy(cr);
+	gdk_region_destroy (region);                
+    g_free (allocation); 
+}
+
 void set_expose_func(GxPaintBox *paint_box, const gchar *paint_func)
 {
 	if (strcmp(paint_func, "pedal_expose") == 0) {
 		paint_box->expose_func = pedal_expose;
+	} else 	if (strcmp(paint_func, "frame_expose") == 0) {
+		paint_box->expose_func = frame_expose;
 	} else {
 		paint_box->expose_func = 0;
 	}

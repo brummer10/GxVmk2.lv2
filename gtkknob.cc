@@ -118,11 +118,11 @@ static void knob_expose(GtkWidget *widget, int knob_x, int knob_y, GdkEventExpos
 	
 	double pointer_off =knob_x/6;
 	double radius = min(knob_x-pointer_off, knob_y-pointer_off) / 2;
-	double lengh_x = (knobx+radius+pointer_off/2) - radius * sin(angle);
-	double lengh_y = (knoby+radius+pointer_off/2) + radius * cos(angle);
+	double lengh_x = (knobx+radius+pointer_off/2) - radius/ 1.01 * sin(angle);
+	double lengh_y = (knoby+radius+pointer_off/2) + radius/ 1.01 * cos(angle);
 	//double radius1 = min(knob_x, knob_y) / 2 ; // center
-	double radius_x = (knobx+radius+pointer_off/2) - radius/ 1.18 * sin(angle);
-	double radius_y = (knoby+radius+pointer_off/2) + radius/ 1.18 * cos(angle);
+	double radius_x = (knobx+radius+pointer_off/2) - radius/ 1.05 * sin(angle);
+	double radius_y = (knoby+radius+pointer_off/2) + radius/ 1.05 * cos(angle);
 
 	/** create knobs with cairo **/
 	cairo_t *cr = gdk_cairo_create(GDK_DRAWABLE(gtk_widget_get_window(widget)));
@@ -135,10 +135,10 @@ static void knob_expose(GtkWidget *widget, int knob_x, int knob_y, GdkEventExpos
 	cairo_arc(cr,knobx1+arc_offset, knoby1+arc_offset, knob_x/2.1, 0, 2 * M_PI );
 	cairo_pattern_t*pat =
 		cairo_pattern_create_radial (knobx1+arc_offset-knob_x/6,knoby1+arc_offset-knob_x/6, 1,knobx1+arc_offset,knoby1+arc_offset,knob_x/2.1 );
-		cairo_pattern_add_color_stop_rgb (pat, 0.5, 0.105, 0.105, 0.105);
-		cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.14, 0.14, 0.14);
-		cairo_pattern_add_color_stop_rgb (pat, 0.9, 0.07, 0.07,0.07);
-		cairo_pattern_add_color_stop_rgb (pat, 1, 0.07, 0.07,0.07);
+		cairo_pattern_add_color_stop_rgb (pat, 0.5, 0.6, 0.6, 0.6);
+		cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.84, 0.84, 0.84);
+		cairo_pattern_add_color_stop_rgb (pat, 0.9, 0.42, 0.42, 0.42);
+		cairo_pattern_add_color_stop_rgb (pat, 1, 0.42, 0.42, 0.42);
 	
 	cairo_set_source (cr, pat);
 	cairo_fill_preserve (cr);
@@ -148,31 +148,31 @@ static void knob_expose(GtkWidget *widget, int knob_x, int knob_y, GdkEventExpos
 
 	cairo_arc(cr,knobx1+arc_offset, knoby1+arc_offset, knob_x/3.1, 0, 2 * M_PI );
 	pat =
-		cairo_pattern_create_radial (knobx1+arc_offset-knob_x/6,knoby1+arc_offset-knob_x/6, 1,knobx1+arc_offset,knoby1+arc_offset,knob_x/2.1 );
+		cairo_pattern_create_radial (knobx1+arc_offset-knob_x/8,knoby1+arc_offset-knob_x/8, 1,knobx1+arc_offset,knoby1+arc_offset,knob_x/2.1 );
 	 if (priv->model == 1 || priv->model == 3) {
         if (knobstate > 0.6) {
-		    cairo_pattern_add_color_stop_rgb (pat, 0, 0.2, 0.2, 0.2);
-		    cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.35, 0.35, 0.35);
-		    cairo_pattern_add_color_stop_rgb (pat, 1, 0.25, 0.25,0.25);  
+		    cairo_pattern_add_color_stop_rgb (pat, 0, 0.98, 0.98,0.98);
+		    cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.68, 0.68, 0.68);
+		    cairo_pattern_add_color_stop_rgb (pat, 1, 0.98, 0.98,0.98);  
         } else if (knobstate > 0.1) {
-		    cairo_pattern_add_color_stop_rgb (pat, 0, 0.15, 0.15, 0.15);
-		    cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.25, 0.25, 0.25);
-		    cairo_pattern_add_color_stop_rgb (pat, 1, 0.15, 0.15,0.15);  
+		    cairo_pattern_add_color_stop_rgb (pat, 0, 0.94, 0.94,0.94);
+		    cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.54, 0.54, 0.54);
+		    cairo_pattern_add_color_stop_rgb (pat, 1, 0.94, 0.94,0.94);  
         } else {
-		    cairo_pattern_add_color_stop_rgb (pat, 0, 0.07, 0.07,0.07);
-		    cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.14, 0.14, 0.14);
-		    cairo_pattern_add_color_stop_rgb (pat, 1, 0.07, 0.07,0.07); 
+		    cairo_pattern_add_color_stop_rgb (pat, 0,  0.84, 0.84, 0.84);
+		    cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.42, 0.42, 0.42);
+		    cairo_pattern_add_color_stop_rgb (pat, 1, 0.84, 0.84, 0.84); 
         }
     } else {
-		cairo_pattern_add_color_stop_rgb (pat, 0, 0.14, 0.14, 0.14);
-		cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.07, 0.07,0.07);
-		cairo_pattern_add_color_stop_rgb (pat, 1, 0.14, 0.14, 0.14);
+		cairo_pattern_add_color_stop_rgb (pat, 0,  0.84, 0.84, 0.84);
+		cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.42, 0.42, 0.42);
+		cairo_pattern_add_color_stop_rgb (pat, 1, 0.84, 0.84, 0.84);
     } 
 	
 	cairo_set_source (cr, pat);
 	cairo_fill_preserve (cr);
     cairo_set_source_rgb (cr, 0.1, 0.1, 0.1);
-	cairo_set_line_width(cr, 4.0);
+	cairo_set_line_width(cr, 2.0);
 	cairo_stroke_preserve(cr);
 	cairo_arc(cr,knobx1+arc_offset, knoby1+arc_offset, knob_x/3.1, 0, 2 * M_PI );
     cairo_set_source_rgb (cr, 0., 0., 0.);
@@ -184,14 +184,19 @@ static void knob_expose(GtkWidget *widget, int knob_x, int knob_y, GdkEventExpos
 	cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL);
 	cairo_move_to(cr, radius_x, radius_y);
 	cairo_line_to(cr,lengh_x,lengh_y);
-	cairo_set_line_width(cr,min(5, max(2,knob_x/30)));
-    cairo_set_source_rgb (cr,0.63,0.63,0.63);
+	cairo_set_line_width(cr,min(5, max(4,knob_x/30)));
+    cairo_set_source_rgb (cr,0.1,0.1,0.1);
+	cairo_stroke_preserve(cr);
+	cairo_move_to(cr, radius_x, radius_y);
+	cairo_line_to(cr,lengh_x,lengh_y);
+	cairo_set_line_width(cr,min(4, max(3,knob_x/30)));
+    cairo_set_source_rgb (cr,0.6,0.0,0.0);
 	cairo_stroke(cr);
     
 	/** show value on the kob**/
     char s[64];
     print_value(G_OBJECT(adj),s);
-    cairo_set_source_rgba (cr, 0.6, 0.6, 0.6,0.6);
+    cairo_set_source_rgba (cr, 0.1, 0.1, 0.1,0.6);
     cairo_set_font_size (cr, 11.0);
     cairo_select_font_face (cr, "Sans", CAIRO_FONT_SLANT_NORMAL,
                                CAIRO_FONT_WEIGHT_BOLD);
@@ -203,6 +208,7 @@ static void knob_expose(GtkWidget *widget, int knob_x, int knob_y, GdkEventExpos
         //cairo_move_to (cr, knobx1+15., knoby1+5.);
     }
      
+    cairo_set_source_rgba (cr, 0.6, 0.6, 0.6,0.6);
     cairo_set_font_size (cr, 9.0);
    
     if (priv->model == 1) {

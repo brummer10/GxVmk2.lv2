@@ -51,6 +51,8 @@ struct _GxPaintBox {
 	void (*expose_func)(GtkWidget*, GdkEventExpose*);
 	GdkPixbuf *gxr_image;
     GdkPixbuf *stock_image;
+	GdkPixbuf *gxf_image;
+    GdkPixbuf *stock2_image;
 };
 
 struct _GxPaintBoxClass {
