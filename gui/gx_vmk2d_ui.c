@@ -208,26 +208,6 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     g_signal_connect(G_OBJECT(ui->adj[8]), "value-changed",
           G_CALLBACK(ref_value_changed),(gpointer*)ui->args[8]);
 
-    ui->adj[1] = gtk_adjustment_new( 0.5, 0.0, 1.0, 0.01, 0.01*10.0, 0);
-    ui->knob[1] = gtk_knob_new_with_adjustment(GTK_ADJUSTMENT(ui->adj[1]));
-    ui->label[1] = gtk_label_new("DEPTH");
-    ui->vkbox[1] = gtk_vbox_new(FALSE, 0);
-
-    gtk_widget_modify_fg (ui->label[1], GTK_STATE_NORMAL, &color);
-    style = gtk_widget_get_style(ui->label[1]);
-    pango_font_description_set_size(style->font_desc, 10*PANGO_SCALE);
-    pango_font_description_set_weight(style->font_desc, PANGO_WEIGHT_BOLD);
-    gtk_widget_modify_font(ui->label[1], style->font_desc);
-
-    gtk_box_pack_start(GTK_BOX(ui->pf3box), ui->vkbox[1], TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(ui->vkbox[1]), ui->knob[1], TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(ui->vkbox[1]), ui->label[1], FALSE, FALSE, 0);
-    ui->args[1] = (struct gx_args*) malloc(sizeof(struct gx_args));
-    ui->args[1]->ui = ui;
-    ui->args[1]->port_index = (int)DEPTH;
-    g_signal_connect(G_OBJECT(ui->adj[1]), "value-changed",
-          G_CALLBACK(ref_value_changed),(gpointer*)ui->args[1]);
-
     ui->adj[6] = gtk_adjustment_new( 0.5, 0.01, 1.0, 0.01, 0.01*10.0, 0);
     ui->knob[6] = gtk_knob_new_with_adjustment(GTK_ADJUSTMENT(ui->adj[6]));
     ui->label[6] = gtk_label_new("SPEED");
@@ -247,6 +227,26 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     ui->args[6]->port_index = (int)SPEED;
     g_signal_connect(G_OBJECT(ui->adj[6]), "value-changed",
           G_CALLBACK(ref_value_changed),(gpointer*)ui->args[6]);
+
+    ui->adj[1] = gtk_adjustment_new( 0.5, 0.0, 1.0, 0.01, 0.01*10.0, 0);
+    ui->knob[1] = gtk_knob_new_with_adjustment(GTK_ADJUSTMENT(ui->adj[1]));
+    ui->label[1] = gtk_label_new("DEPTH");
+    ui->vkbox[1] = gtk_vbox_new(FALSE, 0);
+
+    gtk_widget_modify_fg (ui->label[1], GTK_STATE_NORMAL, &color);
+    style = gtk_widget_get_style(ui->label[1]);
+    pango_font_description_set_size(style->font_desc, 10*PANGO_SCALE);
+    pango_font_description_set_weight(style->font_desc, PANGO_WEIGHT_BOLD);
+    gtk_widget_modify_font(ui->label[1], style->font_desc);
+
+    gtk_box_pack_start(GTK_BOX(ui->pf3box), ui->vkbox[1], TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(ui->vkbox[1]), ui->knob[1], TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(ui->vkbox[1]), ui->label[1], FALSE, FALSE, 0);
+    ui->args[1] = (struct gx_args*) malloc(sizeof(struct gx_args));
+    ui->args[1]->ui = ui;
+    ui->args[1]->port_index = (int)DEPTH;
+    g_signal_connect(G_OBJECT(ui->adj[1]), "value-changed",
+          G_CALLBACK(ref_value_changed),(gpointer*)ui->args[1]);
 
 
     ui->adj[5] = gtk_adjustment_new( 1.0, 0.0, 1.0, 1.0, 1.0*10.0, 0);
@@ -272,7 +272,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
 
     ui->adj[4] = gtk_adjustment_new( 0.5, 0.0, 1.0, 0.01, 0.01*10.0, 0);
     ui->knob[4] = gtk_knob_new_with_adjustment(GTK_ADJUSTMENT(ui->adj[4]));
-    ui->label[4] = gtk_label_new("LEVEL");
+    ui->label[4] = gtk_label_new("BLEND");
     ui->vkbox[4] = gtk_vbox_new(FALSE, 0);
 
     gtk_widget_modify_fg (ui->label[4], GTK_STATE_NORMAL, &color);
