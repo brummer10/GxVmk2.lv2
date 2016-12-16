@@ -92,7 +92,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     gtk_widget_modify_font(ui->logo, style->font_desc);
 
     ui->pbox = gx_paint_box_new(GTK_ORIENTATION_VERTICAL,false, 0);
-    set_expose_func(GX_PAINT_BOX(ui->pbox),"pedal_expose");
+    set_expose_func(GX_VMK_PAINT_BOX(ui->pbox),"pedal_expose");
     gtk_container_set_border_width(GTK_CONTAINER(ui->pbox),4);
     ui->box = gtk_vbox_new(FALSE, 4);
     ui->hbox = gtk_hbox_new(FALSE, 4);
@@ -105,19 +105,19 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     gtk_box_pack_start(GTK_BOX(ui->box), ui->vbox, TRUE, TRUE, 0);
 
     ui->pfbox = gx_paint_box_new(GTK_ORIENTATION_HORIZONTAL,false, 10);
-    set_expose_func(GX_PAINT_BOX(ui->pfbox),"frame_expose");
+    set_expose_func(GX_VMK_PAINT_BOX(ui->pfbox),"frame_expose");
     gtk_container_set_border_width(GTK_CONTAINER(ui->pfbox),10);
     ui->pf1box = gx_paint_box_new(GTK_ORIENTATION_HORIZONTAL,false, 10);
-    set_expose_func(GX_PAINT_BOX(ui->pf1box),"frame_expose");
+    set_expose_func(GX_VMK_PAINT_BOX(ui->pf1box),"frame_expose");
     gtk_container_set_border_width(GTK_CONTAINER(ui->pf1box),10);
     ui->pf2box = gx_paint_box_new(GTK_ORIENTATION_HORIZONTAL,false, 10);
-    set_expose_func(GX_PAINT_BOX(ui->pf2box),"frame_expose");
+    set_expose_func(GX_VMK_PAINT_BOX(ui->pf2box),"frame_expose");
     gtk_container_set_border_width(GTK_CONTAINER(ui->pf2box),10);
     ui->pf3box = gx_paint_box_new(GTK_ORIENTATION_HORIZONTAL,false, 10);
-    set_expose_func(GX_PAINT_BOX(ui->pf3box),"frame_expose");
+    set_expose_func(GX_VMK_PAINT_BOX(ui->pf3box),"frame_expose");
     gtk_container_set_border_width(GTK_CONTAINER(ui->pf3box),10);
     ui->pf4box = gx_paint_box_new(GTK_ORIENTATION_VERTICAL,false, 10);
-    set_expose_func(GX_PAINT_BOX(ui->pf4box),"frame_expose");
+    set_expose_func(GX_VMK_PAINT_BOX(ui->pf4box),"frame_expose");
     gtk_container_set_border_width(GTK_CONTAINER(ui->pf4box),10);
 
     gtk_box_pack_end(GTK_BOX(ui->hbox), ui->pf4box, FALSE, FALSE, 0);
