@@ -320,6 +320,8 @@ void Gx_vmk2d_::run_dsp_(uint32_t n_samples)
   if (mbr_model_ != check_mrb_model( mbr_model, mbr_sel) || 
       rev_model_ != check_rev_model( rev_model, tremolo_model)) {
 	needs_ramp_down = true;
+    mbr_model_ = check_mrb_model( mbr_model, mbr_sel);
+    rev_model_ = check_rev_model( rev_model, tremolo_model);
   }
   // check if raming is needed
   if (needs_ramp_down) {
@@ -329,6 +331,7 @@ void Gx_vmk2d_::run_dsp_(uint32_t n_samples)
 	  }
       output[i] = (output[i] * ramp_down) /ramp_down_step ;
     }
+
 
 	if (ramp_down <= 0.0) {
       // when ramped down, clear buffer from viberev class
