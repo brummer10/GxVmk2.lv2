@@ -23,7 +23,7 @@
 <http://guitarix.sourceforge.net/plugins/gx_vmk2d_#_vmk2d_>
     a lv2:Plugin ;
     lv2:binary <gx_vmk2d.so>  ;
-    rdfs:seeAlso <gx_vmk2d.ttl> 
+    rdfs:seeAlso <gx_vmk2d.ttl> ,
                  <modgui.ttl> .
 
 <default-preset>
