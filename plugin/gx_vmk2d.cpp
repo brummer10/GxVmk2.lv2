@@ -405,7 +405,7 @@ void Gx_vmk2d_::run_dsp_(uint32_t n_samples)
   }
   // check if raming is needed
   if (needs_ramp_down) {
-    for (uint32_t i=0; i<n_samples; i++) {
+    for (uint32_t i=0; i<ReCount; i++) {
 	  if (ramp_down >= 0.0) {
 		  --ramp_down;
 	  }
@@ -425,7 +425,7 @@ void Gx_vmk2d_::run_dsp_(uint32_t n_samples)
       ramp_down = ramp_down_step;
     }
   } else if (needs_ramp_up) {
-    for (uint32_t i=0; i<n_samples; i++) {
+    for (uint32_t i=0; i<ReCount; i++) {
 	  if (ramp_up <= ramp_up_step) {
 		  ++ramp_up;
 	  }
