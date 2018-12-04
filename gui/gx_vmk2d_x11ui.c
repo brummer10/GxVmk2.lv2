@@ -250,16 +250,16 @@ static LV2UI_Handle instantiate(const struct _LV2UI_Descriptor * descriptor,
 	}
 
 	//ui->controls[0] = { 1.0, 1.0, 0.0, 1.0, 1.0, 50, 60, 61, 61, false,"POWER", BSWITCH, BYPASS};
-	ui->controls[0] = { 0.5, 0.5, 0.0, 1.0, 0.01, 30, 50, 61, 61, false,"VOLUME", KNOB, VOLUME};
-	ui->controls[1] = { 0.5, 0.5, 0.0, 1.0, 0.01, 100, 50, 61, 61, false,"BASS", KNOB, BASS};
-	ui->controls[2] = { 0.5, 0.5, 0.0, 1.0, 0.01, 170, 50, 61, 61, false,"TREBLE", KNOB, TREBLE};
-	ui->controls[3] = { 0.0, 0.0, 0.0, 1.0, 1.0, 245, 50, 61, 61, false,"VIBE", SWITCH, VIBE};
-	ui->controls[4] = { 0.5, 0.5, 0.0, 1.0, 0.01, 315, 50, 61, 61, false,"DEPTH", KNOB, DEPTH};
-	ui->controls[5] = { 0.5, 0.5, 0.01, 1.0, 0.01, 385, 50, 61, 61, false,"SPEED", KNOB, SPEED};
-	ui->controls[6] = { 0.0, 0.0, 0.0, 1.0, 1.0, 460, 50, 61, 61, false,"REVERB", SWITCH, REVERB};
-	ui->controls[7] = { 0.5, 0.5, 0.0, 1.0, 0.01, 530, 50, 61, 61, false,"LEVEL", KNOB, REVERBLEVEL};
-	ui->controls[8] = { 0.0, 0.0, 0.0, 1.0, 1.0, 605, 50, 61, 61, false,"MRB", SWITCH, MRB};
-	ui->controls[9] = { 0.0, 0.0, 0.0, 2.0, 1.0, 675, 50, 61, 61, false,"SELECT", ENUM, MRBSELECT};
+	ui->controls[0] = (gx_controller) {{ 0.5, 0.5, 0.0, 1.0, 0.01}, { 30, 50, 61, 61}, false,"VOLUME", KNOB, VOLUME};
+	ui->controls[1] = (gx_controller) {{ 0.5, 0.5, 0.0, 1.0, 0.01}, { 100, 50, 61, 61}, false,"BASS", KNOB, BASS};
+	ui->controls[2] = (gx_controller) {{ 0.5, 0.5, 0.0, 1.0, 0.01}, { 170, 50, 61, 61}, false,"TREBLE", KNOB, TREBLE};
+	ui->controls[3] = (gx_controller) {{ 0.0, 0.0, 0.0, 1.0, 1.0},  { 245, 50, 61, 61}, false,"VIBE", SWITCH, VIBE};
+	ui->controls[4] = (gx_controller) {{ 0.5, 0.5, 0.0, 1.0, 0.01}, { 315, 50, 61, 61}, false,"DEPTH", KNOB, DEPTH};
+	ui->controls[5] = (gx_controller) {{ 0.5, 0.5, 0.01, 1.0, 0.01},{ 385, 50, 61, 61}, false,"SPEED", KNOB, SPEED};
+	ui->controls[6] = (gx_controller) {{ 0.0, 0.0, 0.0, 1.0, 1.0},  { 460, 50, 61, 61}, false,"REVERB", SWITCH, REVERB};
+	ui->controls[7] = (gx_controller) {{ 0.5, 0.5, 0.0, 1.0, 0.01}, { 530, 50, 61, 61}, false,"LEVEL", KNOB, REVERBLEVEL};
+	ui->controls[8] = (gx_controller) {{ 0.0, 0.0, 0.0, 1.0, 1.0},  { 605, 50, 61, 61}, false,"MRB", SWITCH, MRB};
+	ui->controls[9] = (gx_controller) {{ 0.0, 0.0, 0.0, 2.0, 1.0},  { 675, 50, 61, 61}, false,"SELECT", ENUM, MRBSELECT};
 
 
 	ui->pedal = cairo_image_surface_create_from_stream(ui, LDVAR(pedal_png));
@@ -1062,7 +1062,6 @@ static const LV2UI_Descriptor descriptor = {
 	extension_data
 };
 
-extern "C"
 LV2_SYMBOL_EXPORT
 const LV2UI_Descriptor* lv2ui_descriptor(uint32_t index) {
 	switch (index) {
