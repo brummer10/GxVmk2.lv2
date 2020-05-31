@@ -75,8 +75,8 @@ endif
    #@build resource object files
 $(RES_OBJECTS) : gui/pedal.png gui/frame.png
 	@echo $(LGREEN)"generate resource files,"$(NONE)
-	-@cd ./gui && ld -r -b binary pedal.png -o pedal.o
-	-@cd ./gui && ld -r -b binary frame.png -o frame.o
+	-@cd ./gui && $(LD) -r -b binary pedal.png -o pedal.o
+	-@cd ./gui && $(LD) -r -b binary frame.png -o frame.o
 
 clean :
 	@rm -f $(NAME).so
