@@ -199,6 +199,7 @@ private:
   float*          tremolo_model;
   uint32_t        rev_model_;
   uint32_t        tremolo_model_;
+  bool            run_first;
  
   bool            needs_ramp_down;
   bool            needs_ramp_up;
@@ -239,6 +240,7 @@ Gx_vmk2d_::Gx_vmk2d_() :
   output(NULL),
   input(NULL),
   driver(driver::plugin()),
+  run_first(true),
   needs_ramp_down(false),
   needs_ramp_up(false) {};
 
@@ -275,7 +277,7 @@ void Gx_vmk2d_::init_dsp_(uint32_t rate)
     fSamplingFreq = 48000;
   }
   // set values for internal ramping
-  ramp_down_step =   8 * (256 * rate) / 48000; 
+  ramp_down_step =   16 * (256 * rate) / 48000; 
   ramp_up_step =  ramp_down_step;
   ramp_down = ramp_down_step;
   ramp_up = 0.0;
@@ -373,8 +375,8 @@ uint32_t Gx_vmk2d_::check_mrb_model(float* mbr_on,float* mbr_select) {
 }
 
 uint32_t Gx_vmk2d_::check_rev_model(float* rev_on,float* vibe_on) {
-  uint32_t rev_o = (*rev_on);
-  uint32_t vibe_o = (*vibe_on);
+  uint32_t rev_o = static_cast<uint32_t>(*rev_on);
+  uint32_t vibe_o = static_cast<uint32_t>(*vibe_on);
   if(rev_o && !vibe_o ) return 1;
   else if(!rev_o && vibe_o ) return 2;
   else if(rev_o && vibe_o ) return 3;
@@ -399,11 +401,33 @@ void Gx_vmk2d_::run_dsp_(uint32_t n_samples)
   // run selected mbr model
   if (mbr_model_ != check_mrb_model( mbr_model, mbr_sel) || 
       rev_model_ != check_rev_model( rev_model, tremolo_model)) {
-	needs_ramp_down = true;
-    mbr_model_ = check_mrb_model( mbr_model, mbr_sel);
-    rev_model_ = check_rev_model( rev_model, tremolo_model);
+      needs_ramp_down = true;
+  }
+  if (run_first) {
+      mbr_model_ = check_mrb_model( mbr_model, mbr_sel);
+      rev_model_ = check_rev_model( rev_model, tremolo_model);
+      run_first = false;
+  }
+  // run selected mbr instance
+  mbr[mbr_model_]->mono_audio(static_cast<int>(ReCount), buf, buf, mbr[mbr_model_]);
+
+  // run selected viberev model
+  if (rev_model_) {
+    viberev[rev_model_-1]->mono_audio(static_cast<int>(ReCount), buf, buf, viberev[rev_model_-1]);
   }
   // check if raming is needed
+  if (needs_ramp_up) {
+    for (uint32_t i=0; i<ReCount; i++) {
+	  if (ramp_up <= ramp_up_step) {
+		  ++ramp_up;
+	  }
+      buf[i] *= ramp_up /ramp_up_step;
+    }
+    if (ramp_up >= ramp_up_step) {
+      needs_ramp_up = false;
+      ramp_up = 0.0;
+    }
+  }
   if (needs_ramp_down) {
     for (uint32_t i=0; i<ReCount; i++) {
 	  if (ramp_down >= 0.0) {
@@ -417,6 +441,7 @@ void Gx_vmk2d_::run_dsp_(uint32_t n_samples)
       // when ramped down, clear buffer from viberev class
       if (rev_model_) {
         viberev[rev_model_-1]->clear_state(viberev[rev_model_-1]);
+        mbr[mbr_model_]->clear_state(mbr[mbr_model_]);
       }
       mbr_model_ = check_mrb_model( mbr_model, mbr_sel);
       rev_model_ = check_rev_model( rev_model, tremolo_model);
@@ -424,24 +449,6 @@ void Gx_vmk2d_::run_dsp_(uint32_t n_samples)
       needs_ramp_up = true;
       ramp_down = ramp_down_step;
     }
-  } else if (needs_ramp_up) {
-    for (uint32_t i=0; i<ReCount; i++) {
-	  if (ramp_up <= ramp_up_step) {
-		  ++ramp_up;
-	  }
-      buf[i] *= ramp_up /ramp_up_step;
-    }
-    if (ramp_up >= ramp_up_step) {
-      needs_ramp_up = false;
-      ramp_up = 0.0;
-    }
-  }
-  // run selected mbr instance
-  mbr[mbr_model_]->mono_audio(static_cast<int>(ReCount), buf, buf, mbr[mbr_model_]);
-
-  // run selected viberev model
-  if (rev_model_) {
-    viberev[rev_model_-1]->mono_audio(static_cast<int>(ReCount), buf, buf, viberev[rev_model_-1]);
   }
   // driver/mixer stage
   driver->mono_audio(static_cast<int>(ReCount), buf, buf, driver);
